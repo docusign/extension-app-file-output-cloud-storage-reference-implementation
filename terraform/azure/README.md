@@ -22,8 +22,8 @@ Before deploying your extension app on Azure, complete the following setup steps
     export ARM_SUBSCRIPTION_ID="your-subscription-id"
     ```
 
-1. Ensure You Have the Correct Permissions
-    Terraform needs sufficient permissions to create resources. Ensure your Azure user has the Contributor role:
+1. Make sure you have the correct permissions
+    Terraform needs sufficient permissions to create resources. Make sure your Azure user has the Contributor role:
     ```sh
     az role assignment list --assignee <your-email> --output table
     ```
