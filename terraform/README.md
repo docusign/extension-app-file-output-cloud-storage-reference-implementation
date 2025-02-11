@@ -3,9 +3,103 @@
 Hashicorp Terraform is an Infrastructure as code (IaC) tool that lets you provision and manage cloud infrastructure. Terraform provides plugins called providers that allow you to interact with cloud providers and other APIs (e.g. Docker).
 
 This guide describes how to use Terrafrom to deploy your extension app to different cloud providers:
-- [Amazon Web Services](https://aws.amazon.com/);
-- [Microsoft Azure](https://azure.microsoft.com/);
-- [Google Cloud Platform](https://cloud.google.com/).
+- [Amazon Web Services](https://aws.amazon.com/)
+- [Microsoft Azure](https://azure.microsoft.com/)
+- [Google Cloud Platform](https://cloud.google.com/)
+
+## Prerequisites
+
+To get started, you need to:
+- **Install any container management tool**: Ensure that you have container management tool installed on your local machine. You can download it from:
+    - [Docker Desktop](https://docs.docker.com/desktop/) based on [Docker](https://docs.docker.com/engine/install/)
+        - **Note:** See [What else should I check if I run Docker Desktop?](#what-else-should-i-check-if-i-run-docker-desktop)
+    - [Rancher Desktop](https://docs.rancherdesktop.io/getting-started/installation/) based on [Moby](https://mobyproject.org/)
+    - [Podman Desktop](https://podman-desktop.io/docs/installation) based on [Podman](https://podman.io/)
+- **Install Terraform**: Ensure that you have Terraform installed on your local machine. You can download it from the [official Terraform website](https://developer.hashicorp.com/terraform/install).
+- **Meet the specific cloud prerequisites**:
+    - [AWS](aws/README.md#specific-cloud-prerequisites)
+    - [Azure](azure/README.md#specific-cloud-prerequisites)
+    - [GCP](gcp/README.md#specific-cloud-prerequisites)
+
+## Deploying resources
+
+To deploy your extension app using Terraform, follow these steps:
+
+1. **Navigate to the directory of the cloud provider you want to deploy to:**
+    ```sh
+    cd aws    # For Amazon Web Services
+    cd azure  # For Microsoft Azure
+    cd gcp    # For Google Cloud Platform
+    ```
+
+1. **Initialize Terraform:**
+    ```sh
+    terraform init -upgrade
+    ```
+
+    _Key points_:
+
+    - The `-upgrade` parameter upgrades the necessary provider plugins to the newest version that complies with the configuration's version constraints.
+
+1. **Generate and review the execution plan:**
+    ```sh
+    terraform plan -out app.tfplan
+    ```
+
+    _Key points_:
+
+    - The `terraform plan` command creates an execution plan, but doesn't execute it. Instead, it determines what actions are necessary to create the configuration specified in your configuration files. This pattern allows you to verify whether the execution plan matches your expectations before making any changes to actual resources.
+    - The optional `-out` parameter allows you to specify an output file for the plan. Using the `-out` parameter ensures that the plan you reviewed is exactly what is applied.
+
+1. **Apply the configuration to provision the infrastructure:**
+    ```sh
+    terraform apply app.tfplan
+    ```
+
+    _Key points_:
+
+    - The example `terraform apply` command assumes you previously ran `terraform plan -out app.tfplan`.
+    - If you specified a different filename for the `-out` parameter, use that same filename in the call to `terraform apply`.
+    - If you didn't use the `-out` parameter, call `terraform apply` without any parameters.
+    - You may add `-auto-approve` parameter to automatically confirm. If not please type `yes` when prompted.
+
+Following these steps will deploy your extension app to the selected cloud provider using Terraform.
+
+## Getting results
+
+After running the `terraform apply` command and confirming the action, Terraform will begin provisioning the infrastructure as defined in configuration files. This process involves:
+
+1. **Creating Resources:** Terraform will create the necessary resources (e.g., Docker image, cloud container registry, cloud web application service, etc.) by making API calls to providers.
+1. **Configuring Resources:** Terraform will configure the resources according to the specifications in configuration files.
+1. **Updating State File:** Terraform will update the state file to reflect the current state of the infrastructure. This file is crucial for tracking the resources and their configurations.
+
+Once the process is complete, Terraform will output the results, including the cloud web application service URL and paths for the generated manifests. Upload these manifests to the [DocuSign Developer Console](https://devconsole.docusign.com/apps) to add your extension app. You can always get the results later by running the `terraform output` command.
+
+## Cleaning up
+
+When you no longer need the resources created via Terraform, do the following steps:
+
+1. **Generate and review the execution plan:**
+
+    ```sh
+    terraform plan -destroy -out app.destroy.tfplan
+    ```
+
+    _Key points_:
+
+    - The `-destroy` parameter activates destroy mode that creates a plan whose goal is to destroy all remote objects that currently exist, leaving an empty Terraform state. It is the same as running `terraform destroy`. Destroy mode can be useful for situations like transient development environments, where the managed objects cease to be useful once the development task is complete.
+
+1. **Apply the configuration to removal of the infrastructure:**
+
+    ```sh
+    terraform apply app.destroy.tfplan
+    ```
+
+    _Key points_:
+
+    - Optionally, you can run `terraform destroy` instead of generating and applying the destroy plan in the above two steps.
+    - You may add `-auto-approve` parameter to automatically confirm. If not please type `yes` when prompted.
+
 
 ## Benefits of using Terraform
 
@@ -114,98 +208,6 @@ The directory structure is organized to support deploying the extension app to d
     └── variables.tf
 ```
 
-## Prerequisites
-
-To get started, you need to:
-- **Install any container management tool**: Ensure that you have container management tool installed on your local machine. You can download it from:
-    - [Docker Desktop](https://docs.docker.com/desktop/) based on [Docker](https://docs.docker.com/engine/install/)
-    - [Rancher Desktop](https://docs.rancherdesktop.io/getting-started/installation/) based on [Moby](https://mobyproject.org/)
-    - [Podman Desktop](https://podman-desktop.io/docs/installation) based on [Podman](https://podman.io/)
-- **Install Terraform**: Ensure that you have Terraform installed on your local machine. You can download it from the [official Terraform website](https://developer.hashicorp.com/terraform/install).
-- **Meet the specific cloud prerequisites**:
-    - [AWS](aws/README.md#specific-cloud-prerequisites)
-    - [Azure](azure/README.md#specific-cloud-prerequisites)
-    - [GCP](gcp/README.md#specific-cloud-prerequisites)
-
-## Deploying resources
-
-To deploy your extension app using Terraform, follow these steps:
-
-1. **Navigate to the directory of the cloud provider you want to deploy to:**
-    ```sh
-    cd aws    # For Amazon Web Services
-    cd azure  # For Microsoft Azure
-    cd gcp    # For Google Cloud Platform
-    ```
-
-1. **Initialize Terraform:**
-    ```sh
-    terraform init -upgrade
-    ```
-
-    _Key points_:
-
-    - The `-upgrade` parameter upgrades the necessary provider plugins to the newest version that complies with the configuration's version constraints.
-
-1. **Generate and review the execution plan:**
-    ```sh
-    terraform plan -out app.tfplan
-    ```
-
-    _Key points_:
-
-    - The `terraform plan` command creates an execution plan, but doesn't execute it. Instead, it determines what actions are necessary to create the configuration specified in your configuration files. This pattern allows you to verify whether the execution plan matches your expectations before making any changes to actual resources.
-    - The optional `-out` parameter allows you to specify an output file for the plan. Using the `-out` parameter ensures that the plan you reviewed is exactly what is applied.
-
-1. **Apply the configuration to provision the infrastructure:**
-    ```sh
-    terraform apply app.tfplan
-    ```
-
-    _Key points_:
-
-    - The example `terraform apply` command assumes you previously ran `terraform plan -out app.tfplan`.
-    - If you specified a different filename for the `-out` parameter, use that same filename in the call to `terraform apply`.
-    - If you didn't use the `-out` parameter, call `terraform apply` without any parameters.
-    - You may add `-auto-approve` parameter to automatically confirm. If not please type `yes` when prompted.
-
-Following these steps will deploy your extension app to the selected cloud provider using Terraform.
-
-## Getting results
-
-After running the `terraform apply` command and confirming the action, Terraform will begin provisioning the infrastructure as defined in configuration files. This process involves:
-
-1. **Creating Resources:** Terraform will create the necessary resources (e.g., Docker image, cloud container registry, cloud web application service, etc.) by making API calls to providers.
-1. **Configuring Resources:** Terraform will configure the resources according to the specifications in configuration files.
-1. **Updating State File:** Terraform will update the state file to reflect the current state of the infrastructure. This file is crucial for tracking the resources and their configurations.
-
-Once the process is complete, Terraform will output the results, including the cloud web application service URL and paths for the generated manifests. Upload these manifests to the [DocuSign Developer Console](https://devconsole.docusign.com/apps) to add your extension app. You can always get the results later by running the `terraform output` command.
-
-## Cleaning up
-
-When you no longer need the resources created via Terraform, do the following steps:
-
-1. **Generate and review the execution plan:**
-
-    ```sh
-    terraform plan -destroy -out app.destroy.tfplan
-    ```
-
-    _Key points_:
-
-    - The `-destroy` parameter activates destroy mode that creates a plan whose goal is to destroy all remote objects that currently exist, leaving an empty Terraform state. It is the same as running `terraform destroy`. Destroy mode can be useful for situations like transient development environments, where the managed objects cease to be useful once the development task is complete.
-
-1. **Apply the configuration to removal of the infrastructure:**
-
-    ```sh
-    terraform apply app.destroy.tfplan
-    ```
-
-    _Key points_:
-
-    - Optionally, you can run `terraform destroy` instead of generating and applying the destroy plan in the above two steps.
-    - You may add `-auto-approve` parameter to automatically confirm. If not please type `yes` when prompted.
-
 ## Frequently asked questions
 
 ### What if I use non-standard Docker daemon socket (Moby, Podman, etc.)?
@@ -234,13 +236,13 @@ $env:DOCKER_HOST="tcp://localhost:2375"
 
 This configuration will allow Terraform to interact with Docker Desktop on Windows.
 
-### What else should I check if I run Docker Desktop on Windows?
+### What else should I check if I run Docker Desktop?
 
-If you run Docker Desktop on Windows, ensure the following:
-
-1. **WSL 2 Backend:** Verify that Docker Desktop is configured to use the WSL 2 backend for better performance and compatibility. You can check this in Docker Desktop settings under the [**General**](https://docs.docker.com/desktop/settings-and-maintenance/settings/#general) tab.
+If you run Docker Desktop, ensure the following:
 
 1. **Use containerd for pulling and storing images**: Turn off the containerd image store. It should bring new features like faster container startup performance by lazy-pulling images, and the ability to run Wasm applications with Docker, but unfortunately `docker` Terraform provider [doesn't support it](https://github.com/kreuzwerker/terraform-provider-docker/issues/534#issuecomment-1483798237). You can check this in Docker Desktop settings under the [**General**](https://docs.docker.com/desktop/settings-and-maintenance/settings/#general) tab.
+
+1. **WSL 2 Backend:** Verify that Docker Desktop is configured to use the WSL 2 backend for better performance and compatibility. You can check this in Docker Desktop settings under the [**General**](https://docs.docker.com/desktop/settings-and-maintenance/settings/#general) tab.
 
 1. **Resource Allocation:** Adjust the resource allocation for Docker Desktop to ensure it has enough CPU and memory to run your containers efficiently. This can be configured in the [**Resources**](https://docs.docker.com/desktop/settings-and-maintenance/settings/#resources) tab of Docker Desktop settings.
 
@@ -248,7 +250,7 @@ If you run Docker Desktop on Windows, ensure the following:
 
 1. **Windows Firewall:** Ensure that Windows Firewall or any other security software is not blocking Docker's network traffic. You may need to create exceptions for Docker.
 
-By checking these settings, you can ensure that Docker Desktop runs smoothly on your Windows machine.
+By checking these settings, you can ensure that Docker Desktop runs smoothly on your machine.
 
 ### What if I use Podman as a container tool?
 
