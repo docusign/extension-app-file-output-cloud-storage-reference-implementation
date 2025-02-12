@@ -1,4 +1,4 @@
-# Deploying extension app to the clouds with Terraform
+# Terraform Deployment Guide
 
 Hashicorp Terraform is an Infrastructure as code (IaC) tool that lets you provision and manage cloud infrastructure. Terraform provides plugins called providers that allow you to interact with cloud providers and other APIs (e.g. Docker).
 

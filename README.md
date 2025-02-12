@@ -2,14 +2,17 @@
 ## Introduction
 This reference implementation models the use case of taking an agreement PDF sent by the Docusign platform using a file archive extension app and storing it either locally or with the cloud provider of choice (AWS, Azure, or GCP).
 
-## Choose Your Setup: Local or Cloud Deployment
-If you want to run the app locally using Node.js and ngrok, follow the [Local Setup Instructions](#local-setup-instructions) below.
+## Choose your setup: local or cloud deployment
+If you want to run the app locally using Node.js and ngrok, follow the [Local setup instructions](#local-setup-instructions) below.
 
-If you want to deploy the app to the cloud using Docker and Terraform, follow the [Terraform Deployment Guide](terraform/README.md), which includes links to cloud-specific setup instructions for AWS, Azure, and GCP.
+If you want to deploy the app to the cloud using Docker and Terraform, see [Deploying an extension app to the cloud with Terraform](terraform/README.md). This includes cloud-specific setup instructions for the following cloud providers:
+- [Amazon Web Services](https://aws.amazon.com/)
+- [Microsoft Azure](https://azure.microsoft.com/)
+- [Google Cloud Platform](https://cloud.google.com/)
 
 ## Local setup instructions
 
-## Video Walkthrough
+### Video Walkthrough
 [![Reference implementation videos](https://img.youtube.com/vi/_4p7GWK5aoA/0.jpg)](https://youtube.com/playlist?list=PLXpRTgmbu4oq4VDLJBA2BO6psxf8vkVoq&feature=shared)
 
 ### 1. Clone the repository
