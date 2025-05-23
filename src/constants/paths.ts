@@ -2,10 +2,10 @@ import { Immutable } from '../utils/types';
 
 const paths = {
   Base: '/api',
-  Archive: {
+  Write: {
     Base: '/',
     File: {
-      Post: '/archive',
+      Post: '/writefile',
     },
   },
   Auth: {

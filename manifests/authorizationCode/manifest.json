@@ -1,68 +1,107 @@
 {
-  "name": "File Archive App",
-  "description": {
-    "short": "App for file archive",
-    "long": "This app is designed to allow for users to archive a signed DocuSign agreement"
-  },
-   "icon": {
-    "data": "iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACxLAAAsSwGlPZapAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADcSURBVHgB7dwxCsMwEADBc8j/v+zUgTRJZNY2M6ULF1oOhECaAQAAAAAA7m778G0fjvS25o8hJUBMgJgAMQFi23xvX/ivK1uyDiYgJkBMgJgAMQFizzm/f8+mTr07MwExAWICxASICRC7wi7o1mdMJiAmQEyAmAAxAWICxASICRATICZATICYADEBYgLEBIgJEBMgJkBMgJgAMQFiAsQEiAkQEyAmQEyAmAAxAWICxASICRATICZATICYADEBYgLEBIitvCfsxd0fmICYADEBYgLEBAAAAAAAADjYCwxUBYWYirDwAAAAAElFTkSuQmCC",
-    "mediaType": "image/png"
-  },
-  "screenshots": [],
-  "publisher": {
-    "name": "John Doe",
-    "email": "john.doe@gmail.com",
-    "phone": "800-867-5309",
-    "website": "www.johndoe.com"
-  },
-  "termsOfServiceUrl": "www.johndoe.com/tos",
-  "privacyUrl": "www.johndoe.com/privacy",
-  "supportUrl": "www.johndoe.com/support",
-  "connections": [
-    {
-      "name": "authentication",
-      "description": "secure connection to the file archive proxy",
-      "type": "oauth2",
-      "params": {
-        "provider": "CUSTOM",
-        "scopes": [],
-        "clientId": "<CLIENT_ID>",
-        "clientSecret": "<CLIENT_SECRET>",
-        "customConfig": {
-          "tokenUrl": "<PROXY_BASE_URL>/api/oauth/token",
-          "authorizationUrl": "<PROXY_BASE_URL>/api/oauth/authorize",
-          "authorizationParams": {
-            "access_type": "offline",
-            "prompt": "consent"
-          },
-          "authorizationMethod": "header",
-          "scopeSeparator": " ",
-          "requiredScopes": []
-        }
-      }
-    }
-  ],
-  "extensions": [
-    {
-      "name": "My Archive Extension",
-      "description": "using to archive an envelope",
-      "template": "EAP.Version1.SpecifiedArchive",
-      "actionReferences": ["My Archive Action"]
-    }
-  ],
-  "actions": [
-    {
-      "name": "My Archive Action",
-      "description": "something about archiving to a proxy",
-      "template": "Document.Version1.SpecifiedArchive",
-      "connectionsReference": "authentication",
-      "params": {
-        "uri": "<PROXY_BASE_URL>/api/archive"
-      }
-    }
-  ],
-  "publicationRegions": [
-    "US"
-  ],
-  "distribution": "PUBLIC"
+	"name": "File Output Cloud Storage",
+	"description": {
+		"short": "App for file output to cloud storage",
+		"long": "This app is designed to write completed Docusign agreements to a cloud storage system."
+	},
+	"termsOfServiceUrl": "https://www.samplecompany.com/tos",
+	"privacyUrl": "https://www.samplecompany.com/privacy-security",
+	"supportUrl": "https://www.samplecompany.com/support",
+	"publisher": {
+		"name": "Sample Company",
+		"email": "sample@email.com"
+	},
+	"connections": [
+		{
+			"name": "authentication",
+			"description": "Secure connection to sample extension app",
+			"type": "oauth2",
+			"params": {
+				"provider": "CUSTOM",
+				"clientId": "<CLIENT_ID>",
+				"clientSecret": "<CLIENT_SECRET>",
+				"scopes": [],
+				"grantType": "authorization_code",
+				"customConfig": {
+					"authorizationMethod": "header",
+					"authorizationParams": {
+						"prompt": "consent",
+						"access_type": "offline"
+					},
+					"authorizationUrl": "<PROXY_BASE_URL>/api/oauth/authorize",
+					"requiredScopes": [],
+					"scopeSeparator": " ",
+					"tokenUrl": "<PROXY_BASE_URL>/api/oauth/token",
+					"refreshScopes": []
+				}
+			}
+		}
+	],
+	"icon": {
+		"data": "iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACxLAAAsSwGlPZapAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADcSURBVHgB7dwxCsMwEADBc8j/v+zUgTRJZNY2M6ULF1oOhECaAQAAAAAA7m778G0fjvS25o8hJUBMgJgAMQFi23xvX/ivK1uyDiYgJkBMgJgAMQFizzm/f8+mTr07MwExAWICxASICRC7wi7o1mdMJiAmQEyAmAAxAWICxASICRATICZATICYADEBYgLEBIgJEBMgJkBMgJgAMQFiAsQEiAkQEyAmQEyAmAAxAWICxASICRATICZATICYADEBYgLEBIitvCfsxd0fmICYADEBYgLEBAAAAAAAADjYCwxUBYWYirDwAAAAAElFTkSuQmCC",
+		"mediaType": "image/png"
+	},
+	"screenshots": [],
+	"extensions": [
+		{
+			"name": "My File Output Cloud Storage Extension",
+			"description": "Used to store files to cloud storage",
+			"template": "FileOutput.Version1.CloudStorage",
+			"actionReferences": [
+				"search",
+				"list-directory-contents",
+				"list-drives",
+				"write-file"
+			],
+			"capabilities": [
+				"FileIO.Version1.ListDirectoryContents",
+				"FileIO.Version1.ListDrives",
+				"FileIO.Version1.Search"
+			]
+		}
+	],
+	"actions": [
+		{
+			"name": "search",
+			"description": "This is a description of my search action",
+			"template": "FileIO.Version1.Search",
+			"connectionsReference": "authentication",
+			"params": {
+				"uri": "<PROXY_BASE_URL>/api/search"
+			}
+		},
+		{
+			"name": "list-directory-contents",
+			"description": "This is a description of my list directory contents action",
+			"template": "FileIO.Version1.ListDirectoryContents",
+			"connectionsReference": "authentication",
+			"params": {
+				"uri": "<PROXY_BASE_URL>/api/listDirectoryContents"
+			}
+		},
+		{
+			"name": "list-drives",
+			"description": "This is a description of my list sites drives container contents action",
+			"template": "FileIO.Version1.ListContainerContents",
+			"connectionsReference": "authentication",
+			"params": {
+				"uri": "<PROXY_BASE_URL>/api/listDrives/listContainerContents"
+			}
+		},
+		{
+			"name": "write-file",
+			"description": "This is a description of my write file action",
+			"template": "FileIO.Version1.WriteFile",
+			"connectionsReference": "authentication",
+			"params": {
+				"uri": "<PROXY_BASE_URL>/api/writefile"
+			}
+		}
+	],
+	"signupUrl": "https://www.samplecompany.com/signup",
+	"changelog": "",
+	"publicationRegions": [
+		"US"
+	],
+	"distribution": "PUBLIC"
 }
