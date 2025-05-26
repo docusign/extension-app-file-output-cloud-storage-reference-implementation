@@ -4,6 +4,9 @@ type SpecifiedFile = {
   path: string;
 };
 
+type Container = [containerID: number,  containerName: string];
+type Sort = [sortKey: string, sortOrder:string];
+
 export interface WriteFileBody {
   files: SpecifiedFile[];
   order?: number;
@@ -14,4 +17,49 @@ export interface WriteFileBody {
 
 export interface WriteFileResponse {
   message: string;
+}
+
+
+export interface ListDrivesBody {
+  
+  containerType: string;
+  parentId?: string;
+  limit?: number;
+  sort: Sort[];
+}
+
+export interface ListDrivesResponse {
+  containers?: Container[];
+  data: object[];
+  containerType: string;
+  parentId?: string;
+}
+
+export interface ListDirectoryContentsBody {
+  
+  parentId: string;
+  filteroptions?: object[];
+  limit?: number;
+  sort: Sort[];
+}
+
+export interface ListDirectoryContentsResponse {
+  parentId: string;
+  data: object[];
+  
+}
+
+export interface SearchBody {
+  
+  searchQuery: string;
+  parentId?: string;
+  filteroptions?: object[];
+  limit?: number;
+  sort: Sort[];
+}
+
+export interface SearchResponse {
+  parentId?: string;
+  results: object[];
+  
 }

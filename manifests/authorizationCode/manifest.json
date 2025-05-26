@@ -76,7 +76,7 @@
 			"template": "FileIO.Version1.ListDirectoryContents",
 			"connectionsReference": "authentication",
 			"params": {
-				"uri": "<PROXY_BASE_URL>/api/listDirectoryContents"
+				"uri": "<PROXY_BASE_URL>/api/listdirectorycontents"
 			}
 		},
 		{
@@ -85,7 +85,7 @@
 			"template": "FileIO.Version1.ListContainerContents",
 			"connectionsReference": "authentication",
 			"params": {
-				"uri": "<PROXY_BASE_URL>/api/listDrives/listContainerContents"
+				"uri": "<PROXY_BASE_URL>/api/listdrives"
 			}
 		},
 		{
@@ -99,7 +99,6 @@
 		}
 	],
 	"signupUrl": "https://www.samplecompany.com/signup",
-	"changelog": "",
 	"publicationRegions": [
 		"US"
 	],

@@ -8,6 +8,24 @@ const paths = {
       Post: '/writefile',
     },
   },
+  ListDrives: {
+    Base: '/',
+    File: {
+      Post: '/listdrives',
+    },
+  },
+  ListDirectoryContents: {
+   Base: '/',
+   File: {
+      Post: '/listdirectorycontents',
+    },
+  },
+  Search: {
+   Base: '/',
+   File: {
+      Post: '/search',
+    },
+  },
   Auth: {
     Base: '/oauth',
     Authorize: {
