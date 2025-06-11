@@ -2,6 +2,7 @@ type SpecifiedFile = {
   basename: string;
   contents: string;
   path: string;
+  pathTemplateValues?: string
 };
 
 type Container = [containerID: number,  containerName: string];
