@@ -2,18 +2,23 @@ import path from 'path';
 import { ListDirectoryContentsBody, ListDirectoryContentsResponse } from '../models/writefile';
 import fs from 'fs';
 import { IReq, IRes } from '../utils/types';
+import { listDirectoryContentsBody } from 'src/validationSchemas/writefile';
 
 
 export const listDirectoryContents = (req: IReq<ListDirectoryContentsBody>, res: IRes) => {
-
+     const {
+     body: {
+      parentId: reqParentId,
+    },
+  } = req;
   
   try {
   const mockdata = [
-      { type: 'folder', name: 'Folder 1', id: 'folder-id-1', parentId: '1' },
-      { type: 'file', name: 'file-id-1.jpeg', id: 'image-1', parentId: '1', mimeType: 'image/jpeg', lastModifiedDate: '2023-10-01T00:00:00Z' },
+      { type: 'folder', name: 'Folder 1', id: 'folder-id-1', parentId: reqParentId },
+      { type: 'folder', name: 'Folder 2', id: 'folder-id-2', parentId: reqParentId },
     ];
 
-  const listDirectoryContentsResult: ListDirectoryContentsResponse = { parentId: "12345", data: mockdata };
+  const listDirectoryContentsResult: ListDirectoryContentsResponse = { parentId: reqParentId, data: mockdata };
       return res.json(listDirectoryContentsResult);
 
   }catch (err) {
