@@ -22,23 +22,22 @@ function substringAfter(str: string, char: string): string {
 
 
   try {
-    if (file.path) {
-      fs.mkdirSync(file.path, { recursive: true });
-    }
-        const mappedPathsToFolderId = new Map<string, string>();
         const regexp = new RegExp('{{(.*?)}}', 'g');
+        let fpath = file.path;
         if (file.pathTemplateValues) {
-          const matchedValues = [...file.basename.matchAll(regexp)];
+          const matchedValues = [...fpath.matchAll(regexp)];
           const replacementValues = file.pathTemplateValues;
           matchedValues.forEach((matched, index) => {
             const toBeReplaced = matched[0];
-            const identifierRemoved = substringAfter(replacementValues[index], '_');
-            file.basename = file.basename.replace(toBeReplaced, sanitize(identifierRemoved, { replacement: '_' }));
+            fpath = fpath.replace(toBeReplaced, sanitize(replacementValues[index], { replacement: '_' }));
           });
         }
     
-    
-    fs.writeFileSync(path.join(file.path, file.basename), fileBuffer);
+    const fullPathParts = fpath.split('/');
+    const pathWithoutFile = fullPathParts.slice(0, fullPathParts.length - 1).join('/');
+    const resolvedFileName = fullPathParts[fullPathParts.length - 1];
+    fs.mkdirSync(pathWithoutFile, { recursive: true });
+    fs.writeFileSync(path.join(pathWithoutFile, resolvedFileName), fileBuffer);
     const writeFileResult: WriteFileResponse = { message: 'Successfully wrote file' };
     return res.json(writeFileResult);
   } catch (err) {
