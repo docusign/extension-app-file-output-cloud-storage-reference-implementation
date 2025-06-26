@@ -4,12 +4,12 @@
 		"short": "App for file output to cloud storage",
 		"long": "This app is designed to write completed Docusign agreements to a cloud storage system."
 	},
-	"termsOfServiceUrl": "https://www.samplecompany.com/tos",
-	"privacyUrl": "https://www.samplecompany.com/privacy-security",
-	"supportUrl": "https://www.samplecompany.com/support",
+	"termsOfServiceUrl": "https://www.fontara.com/tos",
+	"privacyUrl": "https://www.fontara.com/privacy-security",
+	"supportUrl": "https://www.fontara.com/support",
 	"publisher": {
-		"name": "Sample Company",
-		"email": "sample@email.com"
+		"name": "Fontara",
+		"email": "sample@fontara.com"
 	},
 	"connections": [
 		{
@@ -48,33 +48,23 @@
 			"description": "Used to store files to cloud storage",
 			"template": "FileOutput.Version1.CloudStorage",
 			"actionReferences": [
-				"search",
-				"list-directory-contents",
-				"list-drives",
-				"write-file"
+				"<LIST_DIRECTORY_CONTENTS_RELATION>",
+				"<LIST_DRIVES_RELATION>",
+				"<WRITE_FILE_RELATION>"
 			],
 			"capabilities": [
 				"FileIO.Version1.ListDirectoryContents",
-				"FileIO.Version1.ListDrives",
-				"FileIO.Version1.Search"
+				"FileIO.Version1.ListDrives"
 			]
 		}
 	],
 	"actions": [
 		{
-			"name": "search",
-			"description": "This is a description of my search action",
-			"template": "FileIO.Version1.Search",
-			"connectionsReference": "authentication",
-			"params": {
-				"uri": "<PROXY_BASE_URL>/api/search"
-			}
-		},
-		{
 			"name": "list-directory-contents",
 			"description": "This is a description of my list directory contents action",
 			"template": "FileIO.Version1.ListDirectoryContents",
 			"connectionsReference": "authentication",
+			"relation": "<LIST_DIRECTORY_CONTENTS_RELATION>",
 			"params": {
 				"uri": "<PROXY_BASE_URL>/api/listdirectorycontents"
 			}
@@ -84,6 +74,7 @@
 			"description": "This is a description of my list sites drives container contents action",
 			"template": "FileIO.Version1.ListContainerContents",
 			"connectionsReference": "authentication",
+			"relation": "<LIST_DRIVES_RELATION>",
 			"params": {
 				"uri": "<PROXY_BASE_URL>/api/listdrives"
 			}
@@ -93,12 +84,13 @@
 			"description": "This is a description of my write file action",
 			"template": "FileIO.Version1.WriteFile",
 			"connectionsReference": "authentication",
+			"relation": "<WRITE_FILE_RELATION>",
 			"params": {
 				"uri": "<PROXY_BASE_URL>/api/writefile"
 			}
 		}
 	],
-	"signupUrl": "https://www.samplecompany.com/signup",
+	"signupUrl": "https://www.fontara.com/signup",
 	"publicationRegions": [
 		"US"
 	],

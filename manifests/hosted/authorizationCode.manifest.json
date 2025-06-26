@@ -1,8 +1,8 @@
 {
-    "name": "File Archive App",
+    "name": "File Output Cloud Storage",
     "description": {
-      "short": "App for file archive",
-      "long": "This app is designed to allow for users to archive a signed DocuSign agreement"
+      "short": "App for file output to cloud storage",
+		  "long": "This app is designed to write completed Docusign agreements to a cloud storage system."
     },
      "icon": {
       "data": "iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAACxLAAAsSwGlPZapAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADcSURBVHgB7dwxCsMwEADBc8j/v+zUgTRJZNY2M6ULF1oOhECaAQAAAAAA7m778G0fjvS25o8hJUBMgJgAMQFi23xvX/ivK1uyDiYgJkBMgJgAMQFizzm/f8+mTr07MwExAWICxASICRC7wi7o1mdMJiAmQEyAmAAxAWICxASICRATICZATICYADEBYgLEBIgJEBMgJkBMgJgAMQFiAsQEiAkQEyAmQEyAmAAxAWICxASICRATICZATICYADEBYgLEBIitvCfsxd0fmICYADEBYgLEBAAAAAAAADjYCwxUBYWYirDwAAAAAElFTkSuQmCC",
@@ -10,14 +10,12 @@
     },
     "screenshots": [],
     "publisher": {
-      "name": "John Doe",
-      "email": "john.doe@gmail.com",
-      "phone": "800-867-5309",
-      "website": "www.johndoe.com"
+      "name": "Fontara",
+		  "email": "sample@fontara.com"
     },
-    "termsOfServiceUrl": "www.johndoe.com/tos",
-    "privacyUrl": "www.johndoe.com/privacy",
-    "supportUrl": "www.johndoe.com/support",
+    "termsOfServiceUrl": "https://www.fontara.com/tos",
+	  "privacyUrl": "https://www.fontara.com/privacy-security",
+	  "supportUrl": "https://www.fontara.com/support",
     "connections": [
       {
         "name": "authentication",
@@ -43,23 +41,52 @@
       }
     ],
     "extensions": [
-      {
-        "name": "My Archive Extension",
-        "description": "using to archive an envelope",
-        "template": "EAP.Version1.SpecifiedArchive",
-        "actionReferences": ["My Archive Action"]
-      }
-    ],
+		{
+			"name": "My File Output Cloud Storage Extension",
+			"description": "Used to store files to cloud storage",
+			"template": "FileOutput.Version1.CloudStorage",
+			"actionReferences": [
+				"<LIST_DIRECTORY_CONTENTS_RELATION>",
+				"<LIST_DRIVES_RELATION>",
+				"<WRITE_FILE_RELATION>"
+			],
+			"capabilities": [
+				"FileIO.Version1.ListDirectoryContents",
+				"FileIO.Version1.ListDrives"
+			]
+		}
+	],
     "actions": [
       {
-        "name": "My Archive Action",
-        "description": "something about archiving to a proxy",
-        "template": "Document.Version1.SpecifiedArchive",
-        "connectionsReference": "authentication",
-        "params": {
-          "uri": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/archive"
-        }
-      }
+			"name": "list-directory-contents",
+			"description": "This is a description of my list directory contents action",
+			"template": "FileIO.Version1.ListDirectoryContents",
+			"connectionsReference": "authentication",
+			"relation": "<LIST_DIRECTORY_CONTENTS_RELATION>",
+			"params": {
+				"uri": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/listdirectorycontents"
+			}
+		},
+		{
+			"name": "list-drives",
+			"description": "This is a description of my list sites drives container contents action",
+			"template": "FileIO.Version1.ListContainerContents",
+			"connectionsReference": "authentication",
+			"relation": "<LIST_DRIVES_RELATION>",
+			"params": {
+				"uri": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/listdrives"
+			}
+		},
+		{
+			"name": "write-file",
+			"description": "This is a description of my write file action",
+			"template": "FileIO.Version1.WriteFile",
+			"connectionsReference": "authentication",
+			"relation": "<WRITE_FILE_RELATION>",
+			"params": {
+				"uri": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/writefile"
+			}
+		}
     ],
     "publicationRegions": [
       "US"

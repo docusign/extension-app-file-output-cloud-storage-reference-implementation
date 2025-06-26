@@ -5,6 +5,8 @@ export const writeFileBody: Schema = {
   'files.*.basename': { trim: true, isString: true },
   'files.*.contents': { trim: true, isString: true },
   'files.*.path': { trim: true, isString: true },
+  'files.*pathTemplateValues': { trim: true, isString: true, isArray: true, optional:true },
+  rootId: { isString: true, optional: true },
   order: { isInt: true, optional: true },
   overwrite: { isBoolean: true, optional: true },
   parent: { isString: true, optional: true },

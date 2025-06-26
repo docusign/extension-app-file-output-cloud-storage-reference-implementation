@@ -12,14 +12,6 @@ export const writeFile = (req: IReq<WriteFileBody>, res: IRes) => {
   } = req;
   const fileBuffer = Buffer.from(file.contents, 'base64');
 
-function substringAfter(str: string, char: string): string {
-  const index = str.indexOf(char);
-  if (index === -1) {
-    return ""; 
-  }
-  return str.substring(index + 1);
-}
-
 
   try {
         const regexp = new RegExp('{{(.*?)}}', 'g');
@@ -34,7 +26,10 @@ function substringAfter(str: string, char: string): string {
         }
     
     const fullPathParts = fpath.split('/');
-    const pathWithoutFile = fullPathParts.slice(0, fullPathParts.length - 1).join('/');
+    var pathWithoutFile = fullPathParts.slice(0, fullPathParts.length - 1).join('/');
+    if (pathWithoutFile === '') {
+      pathWithoutFile = 'testfolder';
+    }
     const resolvedFileName = fullPathParts[fullPathParts.length - 1];
     fs.mkdirSync(pathWithoutFile, { recursive: true });
     fs.writeFileSync(path.join(pathWithoutFile, resolvedFileName), fileBuffer);

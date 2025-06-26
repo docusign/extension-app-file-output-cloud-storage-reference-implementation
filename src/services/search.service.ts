@@ -18,6 +18,6 @@ export const search = (req: IReq<SearchBody>, res: IRes) => {
       return res.json(searchResult);
 
   }catch (err) {
-      console.log(`Encountered an error listing drives: ${err.message}`);
+      console.log(`Encountered an error processing search request: ${err.message}`);
     }
 };
