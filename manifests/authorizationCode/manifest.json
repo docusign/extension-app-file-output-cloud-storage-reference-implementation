@@ -48,9 +48,9 @@
 			"description": "Used to store files to cloud storage",
 			"template": "FileOutput.Version1.CloudStorage",
 			"actionReferences": [
-				"<LIST_DIRECTORY_CONTENTS_RELATION>",
-				"<LIST_DRIVES_RELATION>",
-				"<WRITE_FILE_RELATION>"
+				"list-directory-contents",
+				"list-drives",
+				"write-file"
 			],
 			"capabilities": [
 				"FileIO.Version1.ListDirectoryContents",
@@ -64,7 +64,6 @@
 			"description": "This is a description of my list directory contents action",
 			"template": "FileIO.Version1.ListDirectoryContents",
 			"connectionsReference": "authentication",
-			"relation": "<LIST_DIRECTORY_CONTENTS_RELATION>",
 			"params": {
 				"uri": "<PROXY_BASE_URL>/api/listdirectorycontents"
 			}
@@ -74,7 +73,6 @@
 			"description": "This is a description of my list sites drives container contents action",
 			"template": "FileIO.Version1.ListContainerContents",
 			"connectionsReference": "authentication",
-			"relation": "<LIST_DRIVES_RELATION>",
 			"params": {
 				"uri": "<PROXY_BASE_URL>/api/listdrives"
 			}
@@ -84,7 +82,6 @@
 			"description": "This is a description of my write file action",
 			"template": "FileIO.Version1.WriteFile",
 			"connectionsReference": "authentication",
-			"relation": "<WRITE_FILE_RELATION>",
 			"params": {
 				"uri": "<PROXY_BASE_URL>/api/writefile"
 			}
