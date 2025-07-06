@@ -1,21 +1,23 @@
-# File Archive Extension App Reference Implementation
+# File Output Cloud Storage Extension App Reference Implementation
 ## Introduction
-This reference implementation models the use case of taking an agreement PDF sent by the Docusign platform using a file archive extension app and storing it either locally or with the cloud provider of choice (AWS, Azure, or GCP).
+This reference implementation simulates an external service that writes files to cloud storage. It stores files locally or with the cloud provider of choice (AWS, Azure, or GCP). This reference implementation is useful for:
+- Reviewing the format of requests to and responses from an external service that implements the file output cloud storage extension
+- Seeing how the extension functions when invoked from a [Maestro workflow](https://support.docusign.com/s/document-item?bundleId=yff1696971835267&topicId=dnx1696972415150.html)
 
 ## Authentication
 This reference implementation supports two [authentication](https://developers.docusign.com/extension-apps/build-an-extension-app/it-infrastructure/authorization/) flows:
-* [Authorization Code Grant](https://developers.docusign.com/extension-apps/build-an-extension-app/it-infrastructure/authorization/#authorization-code-grant) – required for public extension apps
-* [Client Credentials Grant](https://developers.docusign.com/extension-apps/build-an-extension-app/it-infrastructure/authorization/#client-credentials-grant) – available to private extension apps. See [Choosing private distribution instead of public](https://developers.docusign.com/extension-apps/extension-apps-101/choosing-private-distribution/)
+* [Authorization Code Grant](https://developers.docusign.com/extension-apps/build-an-extension-app/it-infrastructure/authorization/#authorization-code-grant): Required for public extension apps
+* [Client Credentials Grant](https://developers.docusign.com/extension-apps/build-an-extension-app/it-infrastructure/authorization/#client-credentials-grant): Available to private extension apps. See [Choosing private distribution instead of public](https://developers.docusign.com/extension-apps/extension-apps-101/choosing-private-distribution/).
 
 *Private extension apps can use either authentication method, but public extension apps must use Authorization Code Grant.*
 
-## Hosted Version (no setup required)
-You can use the hosted version of this reference implementation by directly uploading the appropriate manifest file located in the [manifests/hosted/](manifests/hosted) folder to the Docusign Developer Console. See [Upload your manifest and create the file archive app](#3-upload-your-manifest-and-create-the-file-archive-app).
+## Hosted version (no setup required)
+You can use the hosted version of this reference implementation by directly uploading the appropriate manifest file located in the [manifests/hosted/](manifests/hosted) folder to the Docusign Developer Console. See [Upload your manifest and create the extension app](#3-upload-your-manifest-and-create-the-extension-app).
 
 **Note:** The provided manifest includes `clientId` and `clientSecret` values used in the sample authentication connection. These do not authenticate to a real system, but the hosted reference implementation requires these exact values.
 
-## Choose Your Setup: Local or Cloud Deployment
-If you want to run the app locally using Node.js and ngrok, follow the [Local Setup Instructions](#local-setup-instructions) below.
+## Choose your setup: Local or cloud deployment
+If you want to run the app locally using Node.js and ngrok, follow the [Local setup instructions](#local-setup-instructions) below.
 
 If you want to deploy the app to the cloud using Docker and Terraform, see [Deploying an extension app to the cloud with Terraform](terraform/README.md). This includes cloud-specific setup instructions for the following cloud providers:
 - [Amazon Web Services](https://aws.amazon.com/)
@@ -24,13 +26,10 @@ If you want to deploy the app to the cloud using Docker and Terraform, see [Depl
 
 ## Local setup instructions
 
-### Video Walkthrough
-[![Reference implementation videos](https://img.youtube.com/vi/_4p7GWK5aoA/0.jpg)](https://youtube.com/playlist?list=PLXpRTgmbu4oq4VDLJBA2BO6psxf8vkVoq&feature=shared)
-
 ### 1. Clone the repository
 Run the following command to clone the repository:
 ```bash
-git clone https://github.com/docusign/extension-app-file-archive-reference-implementation.git
+git clone https://github.com/docusign/extension-app-file-output-cloud-storage-reference-implementation.git
 ```
 
 ### 2. Generate secret values
@@ -72,10 +71,10 @@ npm run start
 ```
 
 This will start a production build on the port in the `production.env` file (port 3000 by default).
-## Setting up ngrok
+## Set up ngrok
 ### 1. [Install and configure ngrok for your machine.](https://ngrok.com/docs/getting-started/)
 ### 2. Start ngrok
-Run the following command to create a public accessible tunnel to your localhost:
+Run the following command to create a publicly accessible tunnel to your localhost:
 
 ```bash
 ngrok http <PORT>
@@ -111,9 +110,17 @@ Choose a manifest from the [manifests](manifests/) folder based on the appropria
 - `connections.params.customConfig.tokenUrl`
 - `connections.params.customConfig.authorizationUrl`
 - `actions.params.uri`
+   * Replace this value for all of the actions.
 ### 2. Navigate to the [Developer Console](https://devconsole.docusign.com/apps)
-Log in with your Docusign developer credentials and create a new app.
-### 3. Upload your manifest and create the file archive app
-To [create your extension app](https://developers.docusign.com/extension-apps/build-an-extension-app/create/), open the [Developer Console](https://devconsole.docusign.com/apps) and select **+New App.** In the app manifest editor that opens, upload your manifest file or paste into the editor itself; then select Validate. Once the editor validates your manifest, select **Create App.** 
+Log in with your Docusign developer credentials. You can sign up for a free developer account [here](https://www.docusign.com/developers/sandbox).
+### 3. Upload your manifest and create the extension app
+To [create your extension app](https://developers.docusign.com/extension-apps/build-an-extension-app/create/), select **Create App > By editing the manifest**. In the app manifest editor that opens, upload your manifest file or paste into the editor itself; then select **Validate**. Once the editor validates your manifest, select **Create App.**
 ### 4. Test the extension app
-This reference implementation uses mock data to simulate how a file can be automatically archived after the signing process is completed. [Test your extension](https://developers.docusign.com/extension-apps/build-an-extension-app/test/). Extension app tests include [integration tests](https://developers.docusign.com/extension-apps/build-an-extension-app/test/integration-tests/) (connection tests and extension tests), [functional tests](https://developers.docusign.com/extension-apps/build-an-extension-app/test/functional-tests/), and [App Center preview](https://developers.docusign.com/extension-apps/build-an-extension-app/test/app-center-preview/). 
+This reference implementation simulates an external cloud storage service. After you have created an extension app in the Developer Console that connects to the reference implementation, you can run tests that send requests to it. Requests from the calling application are saved to the [logs](logs/) folder. The reference implementation sends responses to the calling application. This reference implementation processes the file output cloud storage extension's action and capabilities as follows:
+- Write File: Writes the file contents supplied in the request to the location specified in the request. If you run the reference implementation locally, the file will be written to the local machine. The reference implementation supports the use of variables in folder and file names.
+- List Drives: Returns mock data.
+- List Directory Contents: Returns mock data.
+#### [Integration tests](https://developers.docusign.com/extension-apps/build-an-extension-app/test/integration-tests/)
+You can run these tests from the Developer Console to test each supported action and capability for the extension. These tests allow you to construct the request body and see the response.
+#### [Functional tests](https://developers.docusign.com/extension-apps/build-an-extension-app/test/functional-tests/)
+This type of test shows how the extension functions when invoked from an [extension point](https://developers.docusign.com/extension-apps/extension-apps-101/concepts/extensions-and-extension-points/#extension-points). For file output cloud storage, the extension point is a [Maestro workflow](https://support.docusign.com/s/document-item?bundleId=yff1696971835267&topicId=dnx1696972415150.html).
