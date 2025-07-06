@@ -46,7 +46,7 @@
 		{
 			"name": "My File Output Cloud Storage Extension",
 			"description": "Used to store files to cloud storage",
-			"template": "FileOutput.Version1.CloudStorage",
+			"template": "FileIO.Version1.FileOutputCloudStorage",
 			"actionReferences": [
 				"list-directory-contents",
 				"list-drives",
@@ -71,7 +71,7 @@
 		{
 			"name": "list-drives",
 			"description": "This is a description of my list sites drives container contents action",
-			"template": "FileIO.Version1.ListContainerContents",
+			"template": "FileIO.Version1.ListDrives",
 			"connectionsReference": "authentication",
 			"params": {
 				"uri": "<PROXY_BASE_URL>/api/listdrives"
