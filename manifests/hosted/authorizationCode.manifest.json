@@ -1,7 +1,6 @@
 {
     "name": "File Output Cloud Storage",
-    "description": {
-      "short": "App for file output to cloud storage",
+    "description": {      "short": "App for file output to cloud storage",
 		  "long": "This app is designed to write completed Docusign agreements to a cloud storage system."
     },
      "icon": {
@@ -27,8 +26,8 @@
           "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "clientSecret": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
           "customConfig": {
-            "tokenUrl": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/oauth/token",
-            "authorizationUrl": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/oauth/authorize",
+            "tokenUrl": "https://app-ext-app-file-output-cs-sample-049e.azurewebsites.net/api/oauth/token",
+            "authorizationUrl": "https://app-ext-app-file-output-cs-sample-049e.azurewebsites.net/api/oauth/authorize",
             "authorizationParams": {
               "access_type": "offline",
               "prompt": "consent"
@@ -63,7 +62,7 @@
 			"template": "FileIO.Version1.ListDirectoryContents",
 			"connectionsReference": "authentication",
 			"params": {
-				"uri": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/listdirectorycontents"
+				"uri": "https://app-ext-app-file-output-cs-sample-049e.azurewebsites.net/api/listdirectorycontents"
 			}
 		},
 		{
@@ -72,7 +71,7 @@
 			"template": "FileIO.Version1.ListDrives",
 			"connectionsReference": "authentication",
 			"params": {
-				"uri": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/listdrives"
+				"uri": "https://app-ext-app-file-output-cs-sample-049e.azurewebsites.net/api/listdrives"
 			}
 		},
 		{
@@ -81,7 +80,7 @@
 			"template": "FileIO.Version1.WriteFile",
 			"connectionsReference": "authentication",
 			"params": {
-				"uri": "https://app-ext-app-file-archive-sample-2f55.azurewebsites.net/api/writefile"
+				"uri": "https://app-ext-app-file-output-cs-sample-049e.azurewebsites.net/api/writefile"
 			}
 		}
     ],
