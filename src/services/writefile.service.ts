@@ -27,11 +27,13 @@ export const writeFile = (req: IReq<WriteFileBody>, res: IRes) => {
     
     // Confine every write to a fixed base directory. Resolving the
     // (attacker-controlled) request path against the base and verifying the
-    // result stays within it prevents absolute-path and `..` traversal writes
-    // outside the intended folder (arbitrary file write / RCE).
+    // relative path from the base does not escape it prevents absolute-path
+    // and `..` traversal writes outside the intended folder (arbitrary file
+    // write / RCE).
     const baseDir = path.resolve('testfolder');
     const dest = path.resolve(baseDir, fpath);
-    if (dest !== baseDir && !dest.startsWith(baseDir + path.sep)) {
+    const relativePath = path.relative(baseDir, dest);
+    if (relativePath === '' || relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
       throw new Error(`Invalid file path: '${fpath}' resolves outside of the allowed directory`);
     }
 
