@@ -1,10 +1,23 @@
 import { Schema } from 'express-validator';
+import path from 'path';
 
 export const writeFileBody: Schema = {
   files: { isArray: { options: [{ min: 1 }] } },
   'files.*.basename': { trim: true, isString: true },
   'files.*.contents': { trim: true, isString: true },
-  'files.*.path': { trim: true, isString: true },
+  'files.*.path': {
+    trim: true,
+    isString: true,
+    // Defense-in-depth: reject absolute paths and `..` traversal segments at
+    // the boundary. The service additionally confines writes to a base dir.
+    custom: {
+      options: (value: string) =>
+        typeof value === 'string' &&
+        !path.isAbsolute(value) &&
+        !value.split(/[\\/]/).includes('..'),
+      errorMessage: 'path must be relative and must not contain ".." segments',
+    },
+  },
   'files.*pathTemplateValues': { trim: true, isString: true, isArray: true, optional:true },
   rootId: { isString: true, optional: true },
   order: { isInt: true, optional: true },
