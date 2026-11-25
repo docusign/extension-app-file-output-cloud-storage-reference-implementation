@@ -42,7 +42,7 @@ variable "application_name" {
   description = "The name of the application"
   type        = string
   nullable    = false
-  default     = "extension-app-file-archive"
+  default     = "ext-app-file-output-cs"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9-]+$", var.application_name)) && length(var.application_name) <= 32
@@ -61,7 +61,7 @@ variable "application_build_base_image_name" {
   description = "The name of the base image to use for the application build"
   type        = string
   nullable    = false
-  default     = "node:lts-alpine"
+  default     = "node:22.23.4-alpine"
 }
 
 variable "application_build_image_tag" {
@@ -86,6 +86,7 @@ variable "application_build_paths" {
     "src/**",
     "views/**",
     "package.json",
+    ".npmrc",
     "tsconfig.json",
     "Dockerfile",
     ".dockerignore"
@@ -108,12 +109,12 @@ variable "application_build_labels" {
   description = "The labels to apply to the application build image"
   type        = map(string)
   default = {
-    "org.opencontainers.image.title"       = "File Archive Extension App Reference Implementation"
-    "org.opencontainers.image.description" = "This reference implementation models the use case of taking an agreement PDF sent by the Docusign platform using a file archive extension app and storing it locally."
-    "org.opencontainers.image.source"      = "https://github.com/docusign/extension-app-file-archive-reference-implementation-private"
+    "org.opencontainers.image.title"       = "File Output Cloud Storage Extension App Reference Implementation"
+    "org.opencontainers.image.description" = "This reference implementation simulates an external service that writes files to cloud storage. It stores files locally or with the cloud provider of choice (AWS, Azure, or GCP)."
+    "org.opencontainers.image.source"      = "https://github.com/docusign/extension-app-file-output-cloud-storage-reference-implementation"
     "org.opencontainers.image.licenses"    = "MIT"
-    "org.opencontainers.image.authors"     = "DocuSign Inc."
-    "org.opencontainers.image.vendor"      = "DocuSign Inc."
+    "org.opencontainers.image.authors"     = "Docusign Inc."
+    "org.opencontainers.image.vendor"      = "Docusign Inc."
   }
 }
 
