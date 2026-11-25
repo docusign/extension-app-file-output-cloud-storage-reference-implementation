@@ -73,7 +73,7 @@ After running the `terraform apply` command and confirming the action, Terraform
 1. **Configuring Resources:** Terraform will configure the resources according to the specifications in the configuration files.
 1. **Updating State File:** Terraform will update the state file to reflect the current state of the infrastructure. This file is crucial for tracking the resources and their configurations.
 
-Once the process is complete, Terraform will output the results, including the cloud web application service URL and paths for the generated manifests. Upload these manifests to the [DocuSign Developer Console](https://devconsole.docusign.com/apps) to add your extension app. You can always get the results later by running the `terraform output` command.
+Once the process is complete, Terraform will output the results, including the cloud web application service URL and paths for the generated manifests. Upload these manifests to the [Docusign Developer Console](https://devconsole.docusign.com/apps) to add your extension app. You can always get the results later by running the `terraform output` command.
 
 ## Cleaning up
 
